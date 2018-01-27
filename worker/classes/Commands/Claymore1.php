@@ -36,7 +36,37 @@ class Claymore1 extends \Command {
 		}
 
 		$debug_var=$result;echo '<pre style="font: normal 10pt Tahoma;"><hr>';echo 'This debug of $result is in file :<b>'.__FILE__.'</b> at line <b>'.__LINE__.'</b> (class/method:  <b>$'.__CLASS__.'->&gt;</b>)'."\n";if ((is_array($debug_var)) || (is_object($debug_var))) print_r($debug_var);else echo $debug_var; echo '<hr></pre>';unset($debug_var);
+	}
 
+
+	public function killIt() {
+		$out = `wmic process where name='EthDcrMiner64.exe' get ParentProcessId,ProcessId`;
+
+		echo $out,"\n";
+
+		$lines = explode("\n", trim($out));
+		$lines = array_map('trim', $lines);
+
+		$processIds = explode(' ',$lines[1]);
+		$processIds = array_map('trim', $processIds);
+
+		$parentProcessId= $processIds[0];
+		$processId = $processIds[1];
+
+		$check = 'wmic process where "ProcessID='.$parentProcessId.'" get Caption';
+		$out = `$check`;
+		$lines = explode("\n", trim($out));
+		$lines = array_map('trim', $lines);
+		$caption = trim($lines[1]);
+
+		echo "caption=".$caption."\n";
+		if ($caption == 'cmd.exe') {
+			$cmd = 'taskkill /PID '.$parentProcessId;
+			$out = `$cmd`;
+		}
+
+
+		echo $out;
 
 
 

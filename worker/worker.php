@@ -14,4 +14,4 @@ $debug_var=$gpus;echo '<pre style="font: normal 10pt Tahoma;"><hr>';echo 'This d
 
 
 $b = new \Commands\Claymore1();
-$b->findPID();
+$b->killIt();
