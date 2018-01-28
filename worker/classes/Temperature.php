@@ -8,5 +8,6 @@ abstract class Temperature {
 	}
 
 	abstract function getTemperature();
+    abstract function getPowerDrain();
 
 }

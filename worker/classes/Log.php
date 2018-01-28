@@ -19,5 +19,22 @@ final class Log {
         echo date("r")." #".$string."\n";
     }
 
+    public static function getBetween($string, $startTag, $endTag) {
+        $delimiter = '#';
+        $regex = $delimiter . preg_quote($startTag, $delimiter)
+            . '(.*?)'
+            . preg_quote($endTag, $delimiter)
+            . $delimiter
+            . 's';
+        preg_match($regex,$string,$matches);
+
+        if (isset($matches[1])) {
+            return trim($matches[1]);
+        }else{
+            return false;
+        }
+
+    }
+
 
 }

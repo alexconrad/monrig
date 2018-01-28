@@ -38,6 +38,7 @@ abstract class Command {
 
     abstract function startIt();
     abstract function killIt();
+    abstract function getHashRate();
 
 
 }

@@ -16,6 +16,10 @@ class Claymore1 extends \Command {
             throw new \Exception('This command can only run on windows', 6001);
         }
 
+        if (!file_exists(self::TAIL)) {
+            throw new \Exception('TAIL.EXE file does not exist: '.self::TAIL."\nInstall GNU Utilities for Win32. Can be downloaded from: https://sourceforge.net/projects/unxutils/", 6002);
+        }
+
         if (!file_exists(self::BAT_FILE)) {
             throw new \Exception('Bat file does not exist: '.self::BAT_FILE, 6002);
         }
@@ -32,15 +36,16 @@ class Claymore1 extends \Command {
     }
 
     public function getHashRate() {
-        $cmd = self::TAIL.' -n 100 '.self::LOG_FILE;
+        $cmd = self::TAIL.' -n 50 '.self::LOG_FILE;
         $out = `$cmd`;
         $lines = explode("\n", $out);
-        print_r($lines);
+        //print_r($lines);
         $lines = array_reverse($lines);
         foreach ($lines as $line) {
             if (stristr($line, 'Total Speed:')) {
                 \Log::show($line);
-                return $line;
+                $hashRate = \Log::getBetween($line,'Total Speed:','h/s');
+                return $hashRate;
             }
         }
     }
