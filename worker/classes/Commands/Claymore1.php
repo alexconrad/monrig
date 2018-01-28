@@ -7,6 +7,7 @@ class Claymore1 extends \Command {
 
 	const FULLNAME = 'Claymore\'s Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.3';
     const BAT_FILE = 'C:'.DIRECTORY_SEPARATOR.'Mine'.DIRECTORY_SEPARATOR.'Claymore\'s Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.3'.DIRECTORY_SEPARATOR.'mystart.bat'; //FULL PATH
+    const LOG_FILE = 'C:'.DIRECTORY_SEPARATOR.'mine.txt';
 
     public function __construct()
     {
@@ -30,6 +31,20 @@ class Claymore1 extends \Command {
 
     }
 
+    public function getHashRate() {
+        $cmd = self::TAIL.' -n 100 '.self::LOG_FILE;
+        $out = `$cmd`;
+        $lines = explode("\n", $out);
+        print_r($lines);
+        $lines = array_reverse($lines);
+        foreach ($lines as $line) {
+            if (stristr($line, 'Total Speed:')) {
+                \Log::show($line);
+                return $line;
+            }
+        }
+    }
+
 	public function startIt()
     {
 
@@ -37,12 +52,13 @@ class Claymore1 extends \Command {
         $pid+=0;
 
         if ($pid != 0) {
-            throw new \Exception('Already running !', 6005);
+            $oInfo = $this->infoPID($pid);
+            throw new \Exception('Already running with PID '.$pid.' : '.$oInfo->CommandLine, 6005);
         }
 
 
 
-        $cmd = self::PSEXEC.' -d "'.self::BAT_FILE.'"';
+        $cmd = self::PSEXEC.' -d "'.self::BAT_FILE.'" > c:\\lala.txt';
         shell_exec($cmd);
 
         $pid = $this->findPID(self::BAT_FILE);
