@@ -44,7 +44,7 @@ class Claymore1 extends \Command {
         foreach ($lines as $line) {
             if (stristr($line, 'Total Speed:')) {
                 \Log::show($line);
-                $hashRate = \Log::getBetween($line,'Total Speed:','h/s');
+                $hashRate = \Log::getBetween($line,'Total Speed:','Mh/s');
                 return $hashRate;
             }
         }

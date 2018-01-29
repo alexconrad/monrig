@@ -1,0 +1,26 @@
+CREATE TABLE `rigs` (
+	`rig_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`user_id` INT(11) NULL DEFAULT NULL,
+	`CallKey` CHAR(32) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`rig_id`),
+	INDEX `CallKey` (`CallKey`)
+);
+
+CREATE TABLE `rig_data` (
+	`stat_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`rig_id` INT(11) UNSIGNED NULL DEFAULT NULL,
+	`gpu_index` TINYINT(3) UNSIGNED NULL DEFAULT NULL,
+	`gpu_value` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'temperature celsius',
+	`power_index` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+	`power_value` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Watts',
+	`dated` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`stat_id`)
+);
+
+CREATE TABLE `users` (
+	`user_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`username` VARCHAR(50) NULL DEFAULT NULL,
+	`passwd` VARCHAR(50) NULL DEFAULT NULL,
+	PRIMARY KEY (`user_id`),
+	UNIQUE INDEX `username` (`username`)
+);

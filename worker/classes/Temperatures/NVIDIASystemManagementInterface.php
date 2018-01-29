@@ -33,7 +33,10 @@ class NVIDIASystemManagementInterface extends \Temperature {
 
 		$out2 = trim($out2);
 		$lines = explode("\n", $out2);
-		$lines = array_map('trim', $lines);
+        foreach ($lines as $key=>$value) {
+            $lines[$key] = str_replace('W', '', $value);
+        }
+        $lines = array_map('trim', $lines);
 
 		chdir($current);
 

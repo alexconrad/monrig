@@ -13,7 +13,7 @@ Log::init();
 //$gpus = $a->getTemperature();
 //print_r($gpus);
 try {
-    $b = new \Commands\Claymore2();
+    $b = new \Commands\Claymore1();
     $b->startIt();
 
     echo "Sleeping 10 seconds ... \n";
