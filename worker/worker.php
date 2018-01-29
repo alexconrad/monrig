@@ -13,16 +13,19 @@ Log::init();
 //$gpus = $a->getTemperature();
 //print_r($gpus);
 try {
-    $b = new \Commands\Claymore1();
+    $b = new \Commands\Claymore2();
     $b->startIt();
 
     echo "Sleeping 10 seconds ... \n";
     sleep(12);
-    $b->getHashRate();
-    echo "Sleeping 10 seconds ...\n";
-    sleep(12);
-    $b->getHashRate();
-    echo "Sleeping 10 seconds ...\n";
+
+	$payload = new Payload();
+	$payload->setTemperature(new \Temperatures\NVIDIASystemManagementInterface());
+	$payload->setCommand($b);
+
+	$qwe = $payload->prepareReport();
+	print_r($qwe);
+
     sleep(12);
     echo "done sleeping.\n. Ending command :";
 
