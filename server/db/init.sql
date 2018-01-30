@@ -1,6 +1,8 @@
 CREATE TABLE `rigs` (
 	`rig_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(50) NOT NULL DEFAULT '0',
 	`user_id` INT(11) NULL DEFAULT NULL,
+	`last_stat` DATETIME NULL DEFAULT NULL,
 	`CallKey` CHAR(32) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`rig_id`),
 	INDEX `CallKey` (`CallKey`)
@@ -9,10 +11,9 @@ CREATE TABLE `rigs` (
 CREATE TABLE `rig_data` (
 	`stat_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`rig_id` INT(11) UNSIGNED NULL DEFAULT NULL,
-	`gpu_index` TINYINT(3) UNSIGNED NULL DEFAULT NULL,
-	`gpu_value` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'temperature celsius',
-	`power_index` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
-	`power_value` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Watts',
+	`gpu0_temp` TINYINT(3) UNSIGNED NULL DEFAULT NULL,
+	`gpu1_temp` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+	`hash_rate` MEDIUMINT(9) NULL DEFAULT NULL,
 	`dated` DATETIME NULL DEFAULT NULL,
 	PRIMARY KEY (`stat_id`)
 );
@@ -23,4 +24,15 @@ CREATE TABLE `users` (
 	`passwd` VARCHAR(50) NULL DEFAULT NULL,
 	PRIMARY KEY (`user_id`),
 	UNIQUE INDEX `username` (`username`)
+);
+
+CREATE TABLE `rig_instructions` (
+	`instruction_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`rig_id` INT(10) UNSIGNED NULL DEFAULT NULL,
+	`sent` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+	`action` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '1=start 2=stop',
+	`asked_at` DATETIME NOT NULL,
+	`confirmed_at` DATETIME NOT NULL,
+	PRIMARY KEY (`instruction_id`),
+	INDEX `rig_id` (`rig_id`)
 );

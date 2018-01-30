@@ -10,8 +10,7 @@
     <div class="row"  style="border: 1px dotted #c0c0c0;">
         <div class="col">
 
-            <form action="index.php" method="post">
-                <input type="hidden" name="action" value="login">
+            <form action="index.php?c=index&a=login" method="post">
                 <h4 class="alert-heading">Login</h4>
 
                 <div class="form-group">

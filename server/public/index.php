@@ -1,7 +1,13 @@
 <?php
 try {
+	date_default_timezone_set('UTC');
+	session_start();
     define('CONTROLLER_PATH', '../controllers/');
 
+	// PSR-0 compliant classes are stored in 'classes/'
+	require '../classes/AutoloaderServer.php';
+	$autoloaderPSR = new \AutoloaderServer('', dirname(__FILE__).DIRECTORY_SEPARATOR.'../classes');
+	$autoloaderPSR->register();
 
     if (!isset($_GET['c'])) $_GET['c'] = 'index';
     if (!isset($_GET['a'])) $_GET['a'] = 'index';
@@ -17,15 +23,16 @@ try {
 
     if (file_exists($file)) {
         /** @noinspection PhpIncludeInspection */
-        require '../classes/Views.php';
         require CONTROLLER_PATH . 'Controller.php';
         $controllerClassName = ucfirst($controller) . 'Controller';
-        require CONTROLLER_PATH . $controllerClassName.'.php';
+	    /** @noinspection PhpIncludeInspection */
+	    require CONTROLLER_PATH . $controllerClassName.'.php';
     } else {
         throw new Exception('Controller not found.', 1000);
     }
 
-    $c = new $controllerClassName();
+    DB::init();
+    $c = new $controllerClassName(ucfirst($controller));
     if (method_exists($c, 'action' . $action)) {
         $m = 'action' . $action;
         $c->$m();
